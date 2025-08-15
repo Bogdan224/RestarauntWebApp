@@ -1,3 +1,9 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using RestarauntWebApp.Domain;
+using RestarauntWebApp.Domain.Repositories.Abstract;
+using RestarauntWebApp.Domain.Repositories.EntityFramework;
 using RestarauntWebApp.Infrastructure;
 
 namespace RestarauntWebApp
@@ -18,6 +24,37 @@ namespace RestarauntWebApp
             IConfiguration configuration = configurationBuilder.Build();
             AppConfig config = configuration.GetSection("Project").Get<AppConfig>()!;
 
+            //Подключаем контекст БД
+            builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(config.Database.ConnectionString)
+                    .ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning)));
+
+            builder.Services.AddTransient<IServicesRepository, EFServicesRepository>();
+            builder.Services.AddTransient<IServiceCategoriesRepository, EFServiceCategoriesRepository>();
+            builder.Services.AddTransient<DataManager>();
+
+            //Настраиваем Identity систему
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+            })
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+
+            //Настраиваем Auth cookie
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = "myCompanyAuth";
+                options.Cookie.HttpOnly = true;
+                options.LoginPath = "/admin/login";
+                options.AccessDeniedPath = "/admin/accessdenied";
+                options.SlidingExpiration = true;
+            });
+
             //Подключаем функционал контроллеров
             builder.Services.AddControllersWithViews();
 
@@ -31,6 +68,11 @@ namespace RestarauntWebApp
 
             //Подключаем систему маршрутизации
             app.UseRouting();
+
+            //Подключаем аутентификацию и авторизацию
+            app.UseCookiePolicy();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             //Регистрируем нужные нам маршруты
             app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
