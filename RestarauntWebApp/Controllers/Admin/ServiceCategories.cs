@@ -24,6 +24,7 @@ namespace RestarauntWebApp.Controllers.Admin
                 return View(entity);
 
             await _dataManager.ServiceCategories.SaveServiceCategoryAsync(entity);
+            _logger.LogInformation($"Добавлена/обновлена категория услуги с ID: {entity.Id}");
 
             return RedirectToAction("Index");
         }
@@ -34,6 +35,7 @@ namespace RestarauntWebApp.Controllers.Admin
             //Т.к. в целях безопасности отключено каскадное удаление, то прежде чем удалить категорию, убедитесь,
             //что на нее нет ссылки ни у одной из услуг
             await _dataManager.ServiceCategories.DeleteServiceCategoryAsync(id);
+            _logger.LogInformation($"Удвлена категория услуги с ID: {id}");
             return RedirectToAction("Index");
         }
     }

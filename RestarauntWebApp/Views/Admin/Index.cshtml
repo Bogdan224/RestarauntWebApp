@@ -55,10 +55,10 @@
                         |
                         <a asp-area="" asp-controller="Admin" asp-action="ServicesEdit" asp-route-id="@entity.Id">Редактировать</a>
                         |
-                        <form style="display: inline-block;" id="form-category-@entity.Id" asp-area=""
+                        <form style="display: inline-block;" id="form-@entity.Id" asp-area=""
                               asp-controller="Admin" asp-action="ServicesDelete" method="post">
                             <input type="hidden" name="id" value="@entity.Id" />
-                            <a href="#" onclick="document.getElementById('form-category-@entity.Id').submit();">Удалить</a>
+                            <a href="#" onclick="document.getElementById('form-@entity.Id').submit();">Удалить</a>
                         </form>
 
                     </div>

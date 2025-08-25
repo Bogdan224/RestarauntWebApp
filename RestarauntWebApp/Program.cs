@@ -5,6 +5,7 @@ using RestarauntWebApp.Domain;
 using RestarauntWebApp.Domain.Repositories.Abstract;
 using RestarauntWebApp.Domain.Repositories.EntityFramework;
 using RestarauntWebApp.Infrastructure;
+using Serilog;
 
 namespace RestarauntWebApp
 {
@@ -58,10 +59,23 @@ namespace RestarauntWebApp
             //Подключаем функционал контроллеров
             builder.Services.AddControllersWithViews();
 
+            //Подключаем логи
+            builder.Host.UseSerilog((context, configuration) =>
+                configuration.ReadFrom.Configuration(context.Configuration));
+
             //Собираем конфигурацию
             var app = builder.Build();
 
             //! Порядок следования middleware очень важен, они будут выполнятся согласно нему
+            
+            //Подключаем логирование
+            app.UseSerilogRequestLogging();
+
+            //Далее подключаем обработку исключений
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
             //Подключаем использование статических файлов(css, js, html и т.д.)
             app.UseStaticFiles();

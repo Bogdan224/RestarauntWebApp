@@ -16,8 +16,8 @@
                 @foreach (var entity in Model)
                 {
                     <article class="box excerpt">
-                        <a asp-area="" asp-controller="Services" asp-action="Show" asp-route-id="@entity.Id">
-                            <img src="~/img/@entity.PhotoFileName" alt="" style="width: 25%; max-width: 300 px; float: left; margin: 0 2em 2em 0;"/>
+                        <a asp-area="" asp-controller="Services" asp-action="Show" asp-route-id="@entity.Id" class="image left image-service-list">
+                            <img src="~/img/@entity.PhotoFileName" alt=""/>
                         </a>
                         <div>
                             <header>
