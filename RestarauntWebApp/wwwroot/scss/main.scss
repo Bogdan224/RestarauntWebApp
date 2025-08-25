@@ -1390,12 +1390,21 @@ ol.default {
 	padding: 30px 0;
 }
 
-.img_block{
+.img-block{
 	display: block;
 	margin: 0 auto;
 	max-width: 100%;
+	width: 50%;
+}
+
+.image-service-list{
+	max-width: 300px;
 }
 
 .text-bold{
 	font: bold;
+}
+
+.service-item{
+	padding: 30px 0;
 }
