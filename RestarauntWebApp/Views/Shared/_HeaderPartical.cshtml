@@ -17,9 +17,7 @@
                         @appConfig?.Company.Name
                     </a>
                 </h1>
-
-                @* TODO: ViewComponent *@
-
+                @(await Component.InvokeAsync<MenuViewComponent>())
             </div>
         </header>
 

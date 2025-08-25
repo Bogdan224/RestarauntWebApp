@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestarauntWebApp.Domain;
 using RestarauntWebApp.Domain.Entities;
+using RestarauntWebApp.Infrastructure;
 
 namespace RestarauntWebApp.Models.Components
 {
@@ -15,8 +16,11 @@ namespace RestarauntWebApp.Models.Components
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            IEnumerable<Service> list = await _dataManager.Services.GetServicesAsync();
-            return await Task.FromResult((IViewComponentResult)View("Default"), list);
+            var list = await _dataManager.Services.GetServicesAsync();
+
+            var listDTO = HelperDTO.TransformServices(list);
+
+            return await Task.FromResult((IViewComponentResult)View("Default", listDTO));
         }
     }
 }
