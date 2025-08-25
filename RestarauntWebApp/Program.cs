@@ -25,8 +25,8 @@ namespace RestarauntWebApp
             AppConfig config = configuration.GetSection("Project").Get<AppConfig>()!;
 
             //Подключаем контекст БД
-            builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(config.Database.ConnectionString)
-                    .ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning)));
+            builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(config.Database.ConnectionString));
+                    //.ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning)));
 
             builder.Services.AddTransient<IServicesRepository, EFServicesRepository>();
             builder.Services.AddTransient<IServiceCategoriesRepository, EFServiceCategoriesRepository>();
@@ -50,7 +50,7 @@ namespace RestarauntWebApp
             {
                 options.Cookie.Name = "myCompanyAuth";
                 options.Cookie.HttpOnly = true;
-                options.LoginPath = "/admin/login";
+                options.LoginPath = "/account/login";
                 options.AccessDeniedPath = "/admin/accessdenied";
                 options.SlidingExpiration = true;
             });

@@ -79,12 +79,12 @@ input::-moz-focus-inner {
 	padding: 0;
 }
 
-input, select, textarea {
+/*input, select, textarea {
 	-moz-appearance: none;
 	-webkit-appearance: none;
 	-ms-appearance: none;
 	appearance: none;
-}
+}*/
 
 /* Basic */
 
@@ -1384,4 +1384,14 @@ ol.default {
 		margin-top: 0;
 		padding: 3em 0 1em 0;
 	}
+}
+
+.div-box{
+	padding: 30px 0;
+}
+
+.img_block{
+	display: block;
+	margin: 0 auto;
+	max-width: 100%;
 }
