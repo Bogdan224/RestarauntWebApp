@@ -151,13 +151,13 @@ namespace RestarauntWebApp.Migrations
                         {
                             Id = "660BAE6C-5635-4C8F-9D27-C58FBABA007A",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "174d579d-1e1c-4913-afa0-ee9dc38a9af1",
+                            ConcurrencyStamp = "b62619a1-f30e-4454-bdc0-846922fca5a2",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@admin.com",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEG2/aCKY4a2qTVEtgiX6yRiWzuf5Ji42J5dguGQT+WjIUWGw1RcazrKqHRZZs2DJ6w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKLs8lJfu6jWxfvvRhXZbW6JJ0e0pj3X5qcZgbjhMgbdQeSdqnFSyKJTNgDUuTqSBw==",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -253,7 +253,7 @@ namespace RestarauntWebApp.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("RestarauntWebApp.Domain.Entities.Service", b =>
+            modelBuilder.Entity("RestarauntWebApp.Domain.Entities.Dish", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -261,40 +261,38 @@ namespace RestarauntWebApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
-                        .HasMaxLength(100000)
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DescriptionShort")
                         .HasMaxLength(3000)
                         .HasColumnType("nvarchar(3000)");
 
-                    b.Property<string>("Photo")
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
-
-                    b.Property<int?>("ServiceCategoryId")
+                    b.Property<int>("DishCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("Type")
+                    b.Property<string>("Photo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.PrimitiveCollection<string>("ToppingsIds")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Weight")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ServiceCategoryId");
+                    b.HasIndex("DishCategoryId");
 
-                    b.ToTable("Services");
+                    b.ToTable("Dishes");
                 });
 
-            modelBuilder.Entity("RestarauntWebApp.Domain.Entities.ServiceCategory", b =>
+            modelBuilder.Entity("RestarauntWebApp.Domain.Entities.DishCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -302,17 +300,40 @@ namespace RestarauntWebApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ServiceCategories");
+                    b.ToTable("DishCategories");
+                });
+
+            modelBuilder.Entity("RestarauntWebApp.Domain.Entities.Topping", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DishId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DishId");
+
+                    b.ToTable("Toppings");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -366,18 +387,32 @@ namespace RestarauntWebApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RestarauntWebApp.Domain.Entities.Service", b =>
+            modelBuilder.Entity("RestarauntWebApp.Domain.Entities.Dish", b =>
                 {
-                    b.HasOne("RestarauntWebApp.Domain.Entities.ServiceCategory", "Category")
-                        .WithMany("Services")
-                        .HasForeignKey("ServiceCategoryId");
+                    b.HasOne("RestarauntWebApp.Domain.Entities.DishCategory", "DishCategory")
+                        .WithMany("Dishes")
+                        .HasForeignKey("DishCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Category");
+                    b.Navigation("DishCategory");
                 });
 
-            modelBuilder.Entity("RestarauntWebApp.Domain.Entities.ServiceCategory", b =>
+            modelBuilder.Entity("RestarauntWebApp.Domain.Entities.Topping", b =>
                 {
-                    b.Navigation("Services");
+                    b.HasOne("RestarauntWebApp.Domain.Entities.Dish", null)
+                        .WithMany("Toppings")
+                        .HasForeignKey("DishId");
+                });
+
+            modelBuilder.Entity("RestarauntWebApp.Domain.Entities.Dish", b =>
+                {
+                    b.Navigation("Toppings");
+                });
+
+            modelBuilder.Entity("RestarauntWebApp.Domain.Entities.DishCategory", b =>
+                {
+                    b.Navigation("Dishes");
                 });
 #pragma warning restore 612, 618
         }

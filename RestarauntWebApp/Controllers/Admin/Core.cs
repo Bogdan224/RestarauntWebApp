@@ -21,8 +21,9 @@ namespace RestarauntWebApp.Controllers.Admin
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.ServiceCategories = await _dataManager.ServiceCategories.GetServiceCategoriesAsync();
-            ViewBag.Services = await _dataManager.Services.GetServicesAsync();
+            ViewBag.DishCategories = await _dataManager.DishCategories.GetDishCategoriesAsync();
+            ViewBag.Dishes = await _dataManager.Dishes.GetDishesAsync();
+            ViewBag.Toppings = await _dataManager.Toppings.GetToppingsAsync();
             return View();
         }
 

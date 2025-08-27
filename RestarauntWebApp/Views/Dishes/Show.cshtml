@@ -1,0 +1,43 @@
+﻿@model DishDTO
+@{
+    string? strTitle = Model.Name;
+    ViewBag.Title = strTitle;
+}
+@await Html.PartialAsync("_SidebarPartial")
+<div class="col-8 col-12-medium imp-medium">
+    <div id="content">
+        <h2 class="dish-item">
+            @strTitle
+        </h2>
+        @if (Model.CategoryName != null)
+        {
+            <div class="dish-item">
+                Категория: <span class="text-bold">@Model.CategoryName</span>
+            </div>
+        }
+        <div class="dish-item">
+            Цена: @Model.Price р.
+        </div>
+        <div class="dish-item">
+            Вес: @Model.Weight г.
+        </div>
+        <div class="dish-item">
+           <img src="~/img/@Model.PhotoFileName" class="img-block"/>
+        </div>
+        <div class="dish-item">
+            @Html.Raw(Model.Description)
+        </div>
+        @if (Model.ToppingsDTO != null && Model.ToppingsDTO.Any())
+        {
+            <p>Можно добавить:</p>
+            <div class="dish-item">
+            @foreach (var toppings in Model.ToppingsDTO)
+            {
+                <div class="dish-item">
+                    <div>@toppings.Name: @toppings.Price р.</div>
+                </div>
+            }
+            </div>
+        }
+    </div>
+</div>

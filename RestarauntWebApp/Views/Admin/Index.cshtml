@@ -1,31 +1,32 @@
 ﻿@{
     string strTitle = "Панель администратора";
     ViewBag.Title = strTitle;
-    IEnumerable<ServiceCategory>? serviceCategories = ViewBag.ServiceCategories;
-    IEnumerable<Service>? services = ViewBag.Services;
+    IEnumerable<DishCategory>? dishCategories = ViewBag.DishCategories;
+    IEnumerable<Dish>? dishes = ViewBag.Dishes;
+    IEnumerable<Topping>? toppings = ViewBag.Toppings;
 }
 
 <div>
     <h2>@strTitle</h2>
     <div>
-        <h3>Категории услуг</h3>
+        <h3>Категории блюд</h3>
         <div class="div-box">
-            <a asp-area="" asp-controller="Admin" asp-action="ServiceCategoriesEdit" asp-route-id="">Добавить категорию услуг</a>
+            <a asp-area="" asp-controller="Admin" asp-action="DishCategoriesEdit" asp-route-id="">Добавить категорию блюд</a>
         </div>
-        @if (serviceCategories.Any())
+        @if (dishCategories.Any())
         {
             <div>
-                @foreach (var entity in serviceCategories)
+                @foreach (var entity in dishCategories)
                 {
                     <div>
                         <span>
-                            @($"{entity.Title}")
+                            @($"{entity.Name}")
                         </span>
                         |
-                        <a asp-area="" asp-controller="Admin" asp-action="ServiceCategoriesEdit" asp-route-id="@entity.Id">Редактировать</a>
+                        <a asp-area="" asp-controller="Admin" asp-action="DishCategoriesEdit" asp-route-id="@entity.Id">Редактировать</a>
                         |
                         <form style="display: inline-block;" id="form-category-@entity.Id" asp-area=""
-                              asp-controller="Admin" asp-action="ServiceCategoriesDelete" method="post">
+                              asp-controller="Admin" asp-action="DishCategoriesDelete" method="post">
                             <input type="hidden" name="id" value="@entity.Id"/>
                             <a href="#" onclick="document.getElementById('form-category-@entity.Id').submit();">Удалить</a>
                         </form>
@@ -36,29 +37,58 @@
         }
     </div>
     <div>
-        <h3>Услуги</h3>
+        <h3>Меню</h3>
         <div class="div-box">
-            <a asp-area="" asp-controller="Admin" asp-action="ServicesEdit" asp-route-id="">Добавить услугу</a>
+            <a asp-area="" asp-controller="Admin" asp-action="DishesEdit" asp-route-id="">Добавить блюдо</a>
         </div>
-        @if (serviceCategories.Any())
+        @if (dishes.Any())
         {
             <div>
-                @foreach (var entity in services)
+                @foreach (var entity in dishes)
                 {
                     <div>
                         <span>
-                            @($"{entity.ServiceCategory?.Title}") |
-                            <a asp-area="" asp-controller="Services" asp-action="Show" asp-route-id="@entity.Id">
-                                @($"{entity.Title}")
+                            <a asp-area="" asp-controller="Dishes" asp-action="Show" asp-route-id="@entity.Id">
+                                @($"{entity.Name}")
                             </a>
+                            |
+                            @($"{entity.DishCategory?.Name}") 
                         </span>
                         |
-                        <a asp-area="" asp-controller="Admin" asp-action="ServicesEdit" asp-route-id="@entity.Id">Редактировать</a>
+                        <a asp-area="" asp-controller="Admin" asp-action="DishesEdit" asp-route-id="@entity.Id">Редактировать</a>
                         |
                         <form style="display: inline-block;" id="form-@entity.Id" asp-area=""
-                              asp-controller="Admin" asp-action="ServicesDelete" method="post">
+                              asp-controller="Admin" asp-action="DishesDelete" method="post">
                             <input type="hidden" name="id" value="@entity.Id" />
                             <a href="#" onclick="document.getElementById('form-@entity.Id').submit();">Удалить</a>
+                        </form>
+
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <div>
+        <h3>Добавки</h3>
+        <div class="div-box">
+            <a asp-area="" asp-controller="Admin" asp-action="ToppingsEdit" asp-route-id="">Добавить Добавки</a>
+        </div>
+        @if (toppings.Any())
+        {
+            <div>
+                @foreach (var entity in toppings)
+                {
+                    <div>
+                        <span>
+                            @($"{entity.Name}")
+                        </span>
+                        |
+                        <a asp-area="" asp-controller="Admin" asp-action="ToppingsEdit" asp-route-id="@entity.Id">Редактировать</a>
+                        |
+                        <form style="display: inline-block;" id="form-category-@entity.Id" asp-area=""
+                              asp-controller="Admin" asp-action="ToppingsDelete" method="post">
+                            <input type="hidden" name="id" value="@entity.Id" />
+                            <a href="#" onclick="document.getElementById('form-category-@entity.Id').submit();">Удалить</a>
                         </form>
 
                     </div>

@@ -4,14 +4,17 @@ namespace RestarauntWebApp.Domain
 {
     public class DataManager
     {
-        public IServiceCategoriesRepository ServiceCategories { get; set; }
-        public IServicesRepository Services { get; set; }
+        public IDishCategoriesRepository DishCategories { get; set; }
+        public IDishesRepository Dishes { get; set; }
+        public IToppingsRepository Toppings { get; set; }
 
-        public DataManager(IServiceCategoriesRepository serviceCategoriesRepository,
-            IServicesRepository servicesRepository)
+        public DataManager(IDishCategoriesRepository dishCategoriesRepository,
+            IDishesRepository dishRepository, 
+            IToppingsRepository toppings)
         {
-            ServiceCategories = serviceCategoriesRepository;
-            Services = servicesRepository;
+            DishCategories = dishCategoriesRepository;
+            Dishes = dishRepository;
+            Toppings = toppings;
         }
     }
 }

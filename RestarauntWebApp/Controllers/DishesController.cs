@@ -6,27 +6,27 @@ using RestarauntWebApp.Models;
 
 namespace RestarauntWebApp.Controllers
 {
-    public class ServicesController : Controller
+    public class DishesController : Controller
     {
         private readonly DataManager _dataManager;
 
-        public ServicesController(DataManager dataManager)
+        public DishesController(DataManager dataManager)
         {
             _dataManager = dataManager;
         }
 
         public async Task<IActionResult> Index()
         {
-            return View(HelperDTO.TransformServices(await _dataManager.Services.GetServicesAsync()));
+            return View(HelperDTO.TransformDishes(await _dataManager.Dishes.GetDishesAsync(), _dataManager));
         }
 
         public async Task<IActionResult> Show(int id)
         {
-            Service? entity = await _dataManager.Services.GetServiceByIdAsync(id);
+            Dish? entity = await _dataManager.Dishes.GetDishByIdAsync(id);
 
             if (entity is null) return NotFound();
 
-            return View(HelperDTO.TransformService(entity));
+            return View(HelperDTO.TransformDish(entity, _dataManager));
         }
     }
 }

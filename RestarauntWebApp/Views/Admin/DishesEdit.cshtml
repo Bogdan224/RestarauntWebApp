@@ -1,4 +1,4 @@
-﻿@model Service
+﻿@model Dish
 @{
     string strTitle = "Редактировать запись";
     ViewBag.Title = strTitle;
@@ -15,36 +15,35 @@
 <div>
     <h2>@strTitle</h2>
     <div>
-        <form asp-area="" asp-controller="Admin" asp-action="ServicesEdit" method="post" enctype="multipart/form-data">
+        <form asp-area="" asp-controller="Admin" asp-action="DishesEdit" method="post" enctype="multipart/form-data">
             <input type="hidden" asp-for="Id"/>
-            <input type="hidden" asp-for="DateCreated"/>
             <input type="hidden" asp-for="Photo"/>
             
             <div asp-validation-summary="All"></div>
             <div class="div-box">
-                <select asp-for="ServiceCategoryId">
+                <select asp-for="DishCategoryId">
                     <option value="">Выберите из списка...</option>
-                    @foreach (ServiceCategory entity in ViewBag.ServiceCategories)
+                    @foreach (DishCategory entity in ViewBag.DishCategories)
                     {
-                        <option value="@entity.Id">@entity.Title</option>
+                        <option value="@entity.Id">@entity.Name</option>
                     }
                 </select>
-                <span asp-validation-for="ServiceCategoryId"></span>
+                <span asp-validation-for="DishCategoryId"></span>
             </div>
             <div class="div-box">
-                <label asp-for="Title"></label>
-                <input asp-for="Title"/>
-                <span asp-validation-for="Title"></span>
+                <label asp-for="Name"></label>
+                <input asp-for="Name" />
+                <span asp-validation-for="Name"></span>
             </div>
             <div class="div-box">
-                <label asp-for="Type"></label>
-                <select asp-for="Type" asp-items="Html.GetEnumSelectList<ServiceTypeEnum>()"></select>
-                <span asp-validation-for="Type"></span>
+                <label asp-for="Price"></label>
+                <input asp-for="Price">
+                <span asp-validation-for="Price"></span>
             </div>
             <div class="div-box">
-                <label asp-for="DescriptionShort"></label>
-                <input asp-for="DescriptionShort" />
-                <span asp-validation-for="DescriptionShort"></span>
+                <label asp-for="Weight"></label>
+                <input asp-for="Weight">
+                <span asp-validation-for="Weight"></span>
             </div>
             <div class="div-box">
                 <label asp-for="Description"></label>
@@ -57,6 +56,17 @@
                 <div>
                     <img class="img-block" src="~/img/@Model.Photo"/>
                 </div>
+            </div>
+            <div class="div-box">
+                <select multiple="multiple" asp-for="ToppingsIds">
+                    <option value="-1">Выберите из списка...</option>
+                    @foreach (Topping entity in ViewBag.Toppings)
+                    {
+                        <option value="@entity.Id" id="option-@entity.Id">
+                            @entity.Name
+                        </option>
+                    }
+                </select>
             </div>
             <input type="submit" value="Сохранить"/>
         </form>

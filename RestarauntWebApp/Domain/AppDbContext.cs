@@ -8,9 +8,10 @@ namespace RestarauntWebApp.Domain
     //Контекст базы данных
     public class AppDbContext : IdentityDbContext<IdentityUser>
     {
-        public DbSet<ServiceCategory> ServiceCategories { get; set; } = null!;
-        public DbSet<Service> Services { get; set; } = null!;
-        
+        public DbSet<DishCategory> DishCategories { get; set; } = null!;
+        public DbSet<Dish> Dishes { get; set; } = null!;
+        public DbSet<Topping> Toppings { get; set; } = null!;
+
         //public AppDbContext(){}
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options){}
 

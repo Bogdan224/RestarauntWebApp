@@ -26,11 +26,12 @@ namespace RestarauntWebApp
             AppConfig config = configuration.GetSection("Project").Get<AppConfig>()!;
 
             //Подключаем контекст БД
-            builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(config.Database.ConnectionString));
-                    //.ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning)));
+            builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(config.Database.ConnectionString)
+                .ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning)));
 
-            builder.Services.AddTransient<IServicesRepository, EFServicesRepository>();
-            builder.Services.AddTransient<IServiceCategoriesRepository, EFServiceCategoriesRepository>();
+            builder.Services.AddTransient<IDishesRepository, EfDishesRepository>();
+            builder.Services.AddTransient<IDishCategoriesRepository, EfDishCategoriesRepository>();
+            builder.Services.AddTransient<IToppingsRepository, EfToppingsRepository>();
             builder.Services.AddTransient<DataManager>();
 
             //Настраиваем Identity систему
@@ -65,8 +66,6 @@ namespace RestarauntWebApp
 
             //Собираем конфигурацию
             var app = builder.Build();
-
-            //! Порядок следования middleware очень важен, они будут выполнятся согласно нему
             
             //Подключаем логирование
             app.UseSerilogRequestLogging();

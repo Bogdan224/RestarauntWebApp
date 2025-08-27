@@ -1989,7 +1989,7 @@ ol.default li {
   max-width: 100%;
 }
 
-.image-service-list {
+.image-dish-list {
   max-width: 300px;
 }
 
@@ -1997,6 +1997,6 @@ ol.default li {
   font: bold;
 }
 
-.service-item {
-  padding: 30px 0;
+.dish-item {
+  padding: 10px 0;
 }

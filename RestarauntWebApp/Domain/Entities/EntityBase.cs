@@ -6,11 +6,9 @@ namespace RestarauntWebApp.Domain.Entities
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Заполните название")]
+        [Required(ErrorMessage = "Заполните поле")]
         [Display(Name = "Название")]
         [MaxLength(200)]
-        public string? Title { get; set; }
-
-        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
+        public string? Name { get; set; }
     }
 }

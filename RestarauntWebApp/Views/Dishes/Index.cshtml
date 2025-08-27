@@ -1,6 +1,6 @@
-﻿@model IEnumerable<ServiceDTO>
+﻿@model IEnumerable<DishDTO>
 @{
-    string strTitle = "Услуги";
+    string strTitle = "Меню";
     ViewBag.Title = strTitle;
 }
 
@@ -16,25 +16,25 @@
                 @foreach (var entity in Model)
                 {
                     <article class="box excerpt">
-                        <a asp-area="" asp-controller="Services" asp-action="Show" asp-route-id="@entity.Id" class="image left image-service-list">
+                        <a asp-area="" asp-controller="Dishes" asp-action="Show" asp-route-id="@entity.Id" class="image left image-dish-list">
                             <img src="~/img/@entity.PhotoFileName" alt=""/>
                         </a>
                         <div>
                             <header>
                                 <h3>
-                                    <a asp-area="" asp-controller="Services" asp-action="Show" asp-route-id="@entity.Id">
-                                        @entity.Title
+                                    <a asp-area="" asp-controller="Dishes" asp-action="Show" asp-route-id="@entity.Id">
+                                        @entity.Name
                                     </a>
                                 </h3>
                             </header>
-                            @if (entity.CategoryName != null)
-                            {
-                                <div>
-                                    Категория: <span class="text-bold">@entity.CategoryName</span>
-                                </div>
-                            }
                             <p>
-                                @entity.DescriptionShort
+                                Цена: @entity.Price р.
+                            </p>
+                            <p>
+                                Вес: @entity.Weight г.
+                            </p>
+                            <p>
+                                @Html.Raw(entity.Description)
                             </p>
                         </div>
                     </article>

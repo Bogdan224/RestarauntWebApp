@@ -51,17 +51,16 @@ namespace RestarauntWebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ServiceCategories",
+                name: "DishCategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ServiceCategories", x => x.Id);
+                    table.PrimaryKey("PK_DishCategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -171,26 +170,47 @@ namespace RestarauntWebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Services",
+                name: "Dishes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ServiceCategoryId = table.Column<int>(type: "int", nullable: true),
-                    DescriptionShort = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", maxLength: 100000, nullable: true),
-                    Photo = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Price = table.Column<int>(type: "int", nullable: false),
+                    Weight = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: true),
+                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DishCategoryId = table.Column<int>(type: "int", nullable: false),
+                    ToppingsIds = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Services", x => x.Id);
+                    table.PrimaryKey("PK_Dishes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Services_ServiceCategories_ServiceCategoryId",
-                        column: x => x.ServiceCategoryId,
-                        principalTable: "ServiceCategories",
+                        name: "FK_Dishes_DishCategories_DishCategoryId",
+                        column: x => x.DishCategoryId,
+                        principalTable: "DishCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Toppings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Price = table.Column<int>(type: "int", nullable: false),
+                    DishId = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Toppings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Toppings_Dishes_DishId",
+                        column: x => x.DishId,
+                        principalTable: "Dishes",
                         principalColumn: "Id");
                 });
 
@@ -202,7 +222,7 @@ namespace RestarauntWebApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "660BAE6C-5635-4C8F-9D27-C58FBABA007A", 0, "174d579d-1e1c-4913-afa0-ee9dc38a9af1", "admin@admin.com", true, false, null, "admin@admin.com", "ADMIN", "AQAAAAIAAYagAAAAEG2/aCKY4a2qTVEtgiX6yRiWzuf5Ji42J5dguGQT+WjIUWGw1RcazrKqHRZZs2DJ6w==", null, true, "", false, "admin" });
+                values: new object[] { "660BAE6C-5635-4C8F-9D27-C58FBABA007A", 0, "b62619a1-f30e-4454-bdc0-846922fca5a2", "admin@admin.com", true, false, null, "admin@admin.com", "ADMIN", "AQAAAAIAAYagAAAAEKLs8lJfu6jWxfvvRhXZbW6JJ0e0pj3X5qcZgbjhMgbdQeSdqnFSyKJTNgDUuTqSBw==", null, true, "", false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -249,9 +269,14 @@ namespace RestarauntWebApp.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Services_ServiceCategoryId",
-                table: "Services",
-                column: "ServiceCategoryId");
+                name: "IX_Dishes_DishCategoryId",
+                table: "Dishes",
+                column: "DishCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Toppings_DishId",
+                table: "Toppings",
+                column: "DishId");
         }
 
         /// <inheritdoc />
@@ -273,7 +298,7 @@ namespace RestarauntWebApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Services");
+                name: "Toppings");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -282,7 +307,10 @@ namespace RestarauntWebApp.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "ServiceCategories");
+                name: "Dishes");
+
+            migrationBuilder.DropTable(
+                name: "DishCategories");
         }
     }
 }

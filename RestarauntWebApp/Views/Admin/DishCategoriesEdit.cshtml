@@ -1,4 +1,4 @@
-﻿@model ServiceCategory
+﻿@model DishCategory
 @{
     string strTitle = "Редактировать запись";
     ViewBag.Title = strTitle;
@@ -9,15 +9,14 @@
         @strTitle
     </h2>
     <div>
-        <form asp-area="" asp-controller="Admin" asp-action="ServiceCategoriesEdit" method="post">
+        <form asp-area="" asp-controller="Admin" asp-action="DishCategoriesEdit" method="post">
             <input type="hidden" asp-for="Id"/>
-            <input type="hidden" asp-for="DateCreated"/>
             
             <div asp-validation-summary="All"></div>
             <div class="div-box">
-                <label asp-for="Title"></label>
-                <input asp-for="Title"/>
-                <span asp-validation-for="Title"></span>
+                <label asp-for="@Model.Name"></label>
+                <input asp-for="@Model.Name" />
+                <span asp-validation-for="@Model.Name"></span>
             </div>
             
             <input type="submit" value="Сохранить"/>
